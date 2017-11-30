@@ -1,0 +1,6 @@
+(do
+    (add 48)
+    print
+    (do-after dec (add 3 add 3 add 3))
+    print
+)

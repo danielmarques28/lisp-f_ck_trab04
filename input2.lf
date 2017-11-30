@@ -1,0 +1,17 @@
+(do
+    ; Inicializa os números 2 e 3
+    (add 3)
+    right
+    (add 2)
+    left
+
+    ; Realiza a soma
+    (loop
+        dec right inc left
+    )
+
+    ; Converte para ascii e imprime
+    right
+    (add 48)
+    print
+)

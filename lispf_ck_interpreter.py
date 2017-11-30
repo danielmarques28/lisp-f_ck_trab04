@@ -88,48 +88,48 @@ def do_before(command, old_array):
 
     return new_array
 
-def lisp_f_ck_interpreter(tree, lf_array, count):
+def lisp_f_ck_interpreter(tree, source_array, count):
     loop_active = False
     i = 0
     while i < len(tree):
         if isinstance(tree[i], tuple):
-            lf_array, count = lisp_f_ck_interpreter(tree[i], lf_array, count)
+            source_array, count = lisp_f_ck_interpreter(tree[i], source_array, count)
         elif tree[i] == 'inc':
-            lf_array[count] += 1
+            source_array[count] += 1
         elif tree[i] == 'dec':
-            lf_array[count] -= 1
+            source_array[count] -= 1
         elif tree[i] == 'right':
             count += 1
-            if len(lf_array) - 1 < count:
-                lf_array.append(0)
+            if len(source_array) - 1 < count:
+                source_array.append(0)
         elif tree[i] == 'left':
             count -= 1
             if count < 0:
-                lf_array.append(0)
+                source_array.append(0)
         elif tree[i] == 'add':
             i += 1
-            lf_array[count] += tree[i]
+            source_array[count] += tree[i]
         elif tree[i] == 'sub':
             i += 1
-            lf_array[count] -= tree[i]
+            source_array[count] -= tree[i]
         elif tree[i] == 'print':
-            print(chr(lf_array[count]), end='')
+            print(chr(source_array[count]), end='')
         elif tree[i] == 'read':
-            lf_array[count] = input('input: ')
+            source_array[count] = input('input: ')
         elif tree[i] == 'do-after':
             i += 1 # pass to command
             command = tree[i]
             i += 1 # pass to tuple
             array = do_after(command, list(tree[i]))
-            lisp_f_ck_interpreter(array, lf_array, count)
+            lisp_f_ck_interpreter(array, source_array, count)
         elif tree[i] == 'do-before':
             i += 1 # pass to command
             command = tree[i]
             i += 1 # pass to tuple
             array = do_before(command, list(tree[i]))
-            lisp_f_ck_interpreter(array, lf_array, count)
+            lisp_f_ck_interpreter(array, source_array, count)
         elif tree[i] == 'loop':
-            if lf_array[count] == 0:
+            if source_array[count] == 0:
                 loop_active = False
                 break
             else:
@@ -139,13 +139,13 @@ def lisp_f_ck_interpreter(tree, lf_array, count):
 
         i += 1
 
-    return lf_array, count
+    return source_array, count
 
 def eval(tree):
-    lf_array = [0]
+    source_array = [0]
     count = 0
     print('\nOutput:')
-    lf_array, count = lisp_f_ck_interpreter(tree, lf_array, count)
+    source_array, count = lisp_f_ck_interpreter(tree, source_array, count)
     print()
 
 @click.command()
