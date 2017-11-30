@@ -88,12 +88,12 @@ def do_before(command, old_array):
 
     return new_array
 
-def interpreter(tree, lf_array, count):
+def lisp_f_ck_interpreter(tree, lf_array, count):
     loop_active = False
     i = 0
     while i < len(tree):
         if isinstance(tree[i], tuple):
-            lf_array, count = interpreter(tree[i], lf_array, count)
+            lf_array, count = lisp_f_ck_interpreter(tree[i], lf_array, count)
         elif tree[i] == 'inc':
             lf_array[count] += 1
         elif tree[i] == 'dec':
@@ -121,13 +121,13 @@ def interpreter(tree, lf_array, count):
             command = tree[i]
             i += 1 # pass to tuple
             array = do_after(command, list(tree[i]))
-            interpreter(array, lf_array, count)
+            lisp_f_ck_interpreter(array, lf_array, count)
         elif tree[i] == 'do-before':
             i += 1 # pass to command
             command = tree[i]
             i += 1 # pass to tuple
             array = do_before(command, list(tree[i]))
-            interpreter(array, lf_array, count)
+            lisp_f_ck_interpreter(array, lf_array, count)
         elif tree[i] == 'loop':
             if lf_array[count] == 0:
                 loop_active = False
@@ -145,7 +145,7 @@ def eval(tree):
     lf_array = [0]
     count = 0
     print('\nOutput:')
-    lf_array, count = interpreter(tree, lf_array, count)
+    lf_array, count = lisp_f_ck_interpreter(tree, lf_array, count)
     print()
 
 @click.command()
